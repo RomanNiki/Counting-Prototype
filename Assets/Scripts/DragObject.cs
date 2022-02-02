@@ -4,15 +4,16 @@
 public class DragObject : MonoBehaviour
 {
     [SerializeField] private float _force;
+    [SerializeField] private float _smoothTime;
+    [SerializeField] private Rigidbody _rigidbody;
     private Vector3 mouseOffset;
     private float mouseZCoordinate;
-    private Rigidbody _rigidbody;
     private Camera _mainCamera;
 
     private void Start()
     {
         _mainCamera = Camera.main;
-        _rigidbody = GetComponent<Rigidbody>();
+        _rigidbody ??= GetComponent<Rigidbody>();
     }
 
     private void OnMouseDown()
@@ -31,7 +32,6 @@ public class DragObject : MonoBehaviour
 
     private void OnMouseDrag()
     {
-        _rigidbody.velocity = (GetMouseWorldPose() + mouseOffset - transform.position) * _force;
-        Debug.Log(_rigidbody.velocity);
+        _rigidbody.velocity = Vector3.Lerp(_rigidbody.velocity, (GetMouseWorldPose() + mouseOffset - transform.position) * _force, _smoothTime) ;
     }
 }
