@@ -14,6 +14,7 @@ namespace Player
         [SerializeField] private int _comboComplication = 5;
         [SerializeField] private float _timeToClearBox;
         [SerializeField] private UnityEvent<int> _updatedScoreEvent;
+        [SerializeField] private ParticleSystem _explosions;
         private int _score;
         private List<Ball> _balls;
         
@@ -45,7 +46,8 @@ namespace Player
         {   
             var count = _balls.Count;
             if (count < _startCombo) return;
-         
+            var explosion = NightPool.Spawn(_explosions);
+            explosion.transform.position = transform.position;
             _balls.ForEach(x => NightPool.Despawn(x));
             _balls.RemoveAll(x=>x);
 

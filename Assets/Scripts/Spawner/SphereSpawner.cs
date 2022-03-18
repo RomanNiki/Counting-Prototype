@@ -3,6 +3,8 @@ using Balls;
 using Player.UI;
 using Pool.NightPool;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Spawner
 {
@@ -12,8 +14,14 @@ namespace Spawner
         [SerializeField] private float _zBound;
         [SerializeField] private float _xBound;
         [SerializeField] private Ball _ballPrefab;
-        [SerializeField] private DropPosition _dropPosition;
-        
+        [FormerlySerializedAs("_dropPosition")] [SerializeField] private DropPositionPointer _dropPositionPointer;
+        [SerializeField] private UnityEvent<Ball> _createdBall;
+        public event UnityAction<Ball> CreatedBall
+        {
+            add => _createdBall.AddListener(value);
+            remove => _createdBall.RemoveListener(value);
+        }
+
         public void Init()
         {
             StartCoroutine(SpawnCoroutine());
@@ -28,8 +36,9 @@ namespace Spawner
                 var x = Random.Range(-_xBound, _xBound);
                 var z = Random.Range(-_zBound, _zBound);
                 var randomPosition = new Vector3(x, position.y, z);
-                _dropPosition.SetZPosition(z);
-                NightPool.Spawn(_ballPrefab, randomPosition, Quaternion.identity);
+                _dropPositionPointer.SetZPosition(z);
+                var ball =  NightPool.Spawn(_ballPrefab, randomPosition, Quaternion.identity);
+                _createdBall?.Invoke(ball);
             }
         }
     }

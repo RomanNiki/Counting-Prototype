@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Player.UI
 {
-    public class DropPosition : MonoBehaviour
+    public class DropPositionPointer : MonoBehaviour
     {
         [SerializeField] private float _lifeTime;
         [SerializeField] private Light _light;

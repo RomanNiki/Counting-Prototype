@@ -17,7 +17,7 @@ namespace Player
         {
             var transformPosition = transform.position;
             var playerPosition = _playerTransform.position;
-            var targetPosition = new Vector3(playerPosition.x, transformPosition.y, playerPosition.z) + _offset;
+            var targetPosition = new Vector3(playerPosition.x, 0, playerPosition.z) + _offset;
             var smoothedPosition = Vector3.Lerp(transformPosition, targetPosition, _smoothSpeed * Time.deltaTime);
             transform.position = smoothedPosition;
         }

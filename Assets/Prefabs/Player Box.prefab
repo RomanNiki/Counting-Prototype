@@ -372,6 +372,7 @@ MonoBehaviour:
   _updatedScoreEvent:
     m_PersistentCalls:
       m_Calls: []
+  _explosions: {fileID: 4758139293545943008, guid: c7ad2532a6eeb40b59033c75e71fa054, type: 3}
 --- !u!114 &8269584597994930667
 MonoBehaviour:
   m_ObjectHideFlags: 0
