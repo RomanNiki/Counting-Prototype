@@ -5,6 +5,7 @@ using Pool.NightPool;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 namespace Spawner
 {
@@ -16,6 +17,7 @@ namespace Spawner
         [SerializeField] private Ball _ballPrefab;
         [FormerlySerializedAs("_dropPosition")] [SerializeField] private DropPositionPointer _dropPositionPointer;
         [SerializeField] private UnityEvent<Ball> _createdBall;
+        private Coroutine _spawnCoroutine;
         public event UnityAction<Ball> CreatedBall
         {
             add => _createdBall.AddListener(value);
@@ -24,7 +26,7 @@ namespace Spawner
 
         public void Init()
         {
-            StartCoroutine(SpawnCoroutine());
+            _spawnCoroutine = StartCoroutine(SpawnCoroutine());
         }
 
         private IEnumerator SpawnCoroutine()
@@ -40,6 +42,11 @@ namespace Spawner
                 var ball =  NightPool.Spawn(_ballPrefab, randomPosition, Quaternion.identity);
                 _createdBall?.Invoke(ball);
             }
+        }
+
+        private void OnDisable()
+        {
+            StopCoroutine(_spawnCoroutine);
         }
     }
 }

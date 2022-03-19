@@ -15,7 +15,6 @@ namespace Player.UI
         private SphereSpawner _spawner;
         private Camera _camera;
         private Transform _targetTransform;
-        
 
         private void Awake()
         {
@@ -37,7 +36,7 @@ namespace Player.UI
         
         private void DrawIndicators()
         {
-            if (_targetTransform == null)
+            if (_pointerImage.enabled == false)
             {
                 return;
             }
@@ -66,8 +65,8 @@ namespace Player.UI
 
         private void Show(Ball ball)
         {
-            _pointerImage.enabled = true;
             _targetTransform = ball.transform;
+            _pointerImage.enabled = true;
         }
 
         public void Init(SphereSpawner spawner)

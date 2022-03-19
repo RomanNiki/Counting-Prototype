@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 namespace Player
 {
@@ -8,12 +9,21 @@ namespace Player
         [SerializeField] private float _force;
         [SerializeField] private float _smoothTime;
         [SerializeField] private Rigidbody _rigidbody;
+        [SerializeField] private UnityEvent _objectDrag;
+        private Transform _objectTransform;
         private Vector3 _mouseOffset;
         private float _mouseZCoordinate;
         private Camera _mainCamera;
 
+        public event UnityAction ObjectDrag
+        {
+            add => _objectDrag.AddListener(value);
+            remove => _objectDrag.RemoveListener(value);
+        }
+        
         private void Start()
         {
+            _objectTransform = transform;
             _mainCamera = Camera.main;
             _rigidbody ??= GetComponent<Rigidbody>();
         }
@@ -34,7 +44,8 @@ namespace Player
 
         private void OnMouseDrag()
         {
-            _rigidbody.velocity = Vector3.Lerp(_rigidbody.velocity, (GetMouseWorldPose() + _mouseOffset - transform.position) * _force, _smoothTime) ;
+            _rigidbody.velocity = Vector3.Lerp(_rigidbody.velocity, (GetMouseWorldPose() + _mouseOffset - _objectTransform.position) * _force, _smoothTime) ;
+            _objectDrag?.Invoke();
         }
     }
 }
