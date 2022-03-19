@@ -16,12 +16,12 @@ namespace Player.UI
         private Camera _camera;
         private Transform _targetTransform;
 
-        private void Awake()
+        private void OnApplicationFocus(bool hasFocus)
         {
-            _screenCenter = new Vector3(Screen.width, Screen.height, 0) / 2;
-            _screenBounds = _screenCenter * _screenBoundOffset;
-            _camera = Camera.main;
-            Hide();
+            if (hasFocus)
+            {
+                FindCenterAndBounds();
+            }
         }
 
         private void Update()
@@ -32,6 +32,12 @@ namespace Player.UI
         private void OnDisable()
         {
             _spawner.CreatedBall -= Show;
+        }
+
+        private void FindCenterAndBounds()
+        {
+            _screenCenter = new Vector3(Screen.width, Screen.height, 0) / 2;
+            _screenBounds = _screenCenter * _screenBoundOffset;
         }
         
         private void DrawIndicators()
@@ -71,8 +77,11 @@ namespace Player.UI
 
         public void Init(SphereSpawner spawner)
         {
+            FindCenterAndBounds();
             _spawner = spawner;
             spawner.CreatedBall += Show;
+            _camera = Camera.main;
+            Hide();
         }
     }
 }
