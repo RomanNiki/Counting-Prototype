@@ -4,7 +4,6 @@ namespace Player.UI
 {
     public class UIScoreMover : MonoBehaviour
     {
-        [SerializeField] private DragObject _player;
         [SerializeField] private Vector3 _offSet;
         private Transform _playerTransform;
 
@@ -18,10 +17,9 @@ namespace Player.UI
             transform.position = _offSet + _playerTransform.position;
         }
 
-        public void Init(DragObject player)
+        public void Init(Transform player)
         {
-            _player ??= player;
-            _playerTransform = _player.transform;
+            _playerTransform = player.transform;
         }
     }
 }

@@ -4,7 +4,8 @@ namespace Interfaces
 {
     public interface ICounter
     {
-        void AddBallInBox(Ball ball);
-        void RemoveBallFromBox(Ball ball);
+        int GetCount();
+        void AddBall(Ball ball);
+        void RemoveBall(Ball ball);
     }
 }

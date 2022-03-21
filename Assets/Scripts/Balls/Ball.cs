@@ -1,5 +1,4 @@
 ﻿using Interfaces;
-using Player;
 using Pool.NightPool;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -14,13 +13,13 @@ namespace Balls
         private Renderer _meshRenderer;
         private Rigidbody _rigidbody;
         private ICounter _counter;
+        
         public int ScorePoints => _scorePoint;
 
         private void Awake()
         {
-            _meshRenderer ??= GetComponent<Renderer>();
-            _rigidbody ??= GetComponent<Rigidbody>();
-            _counter = InboxCounter.Instance;
+            _meshRenderer = GetComponent<Renderer>();
+            _rigidbody = GetComponent<Rigidbody>();
         }
 
         private void Start()
@@ -30,12 +29,13 @@ namespace Balls
 
         private void OnTriggerEnter(Collider other)
         {
-            _counter?.AddBallInBox(this);
+            _counter ??= other.GetComponent<ICounter>();
+            _counter?.AddBall(this);
         }
 
         private void OnTriggerExit(Collider other)
         {
-            _counter?.RemoveBallFromBox(this);
+            _counter?.RemoveBall(this);
         }
 
         private void OnCollisionEnter(Collision collision)

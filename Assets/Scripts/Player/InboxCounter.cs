@@ -23,19 +23,6 @@ namespace Player
             add => _updatedScoreEvent.AddListener(value);
             remove => _updatedScoreEvent.RemoveListener(value);
         }
-        public static InboxCounter Instance { get; private set;}
-        
-        private void Awake()
-        {
-            if (Instance != null)
-            {
-                Destroy(gameObject);
-            }
-            else
-            {
-                Instance = this;
-            }
-        }
 
         private void Start()
         {
@@ -57,7 +44,12 @@ namespace Player
             }
         }
 
-        public void AddBallInBox(Ball ball)
+        public int GetCount()
+        {
+            return _balls.Count;
+        }
+
+        public void AddBall(Ball ball)
         {
             _score += ball.ScorePoints;
             _balls.Add(ball);
@@ -65,7 +57,7 @@ namespace Player
             Invoke(nameof(ComboClearBox), _timeToClearBox);
         }
 
-        public void RemoveBallFromBox(Ball ball)
+        public void RemoveBall(Ball ball)
         {
             _score -= ball.ScorePoints;
             _updatedScoreEvent.Invoke(_score);

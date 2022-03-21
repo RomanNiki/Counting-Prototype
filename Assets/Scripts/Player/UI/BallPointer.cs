@@ -1,5 +1,4 @@
 ﻿using Balls;
-using Spawner;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +11,6 @@ namespace Player.UI
         [Range(0.5f, 0.9f)] [SerializeField] private float _screenBoundOffset = 0.9f;
         private Vector3 _screenCenter;
         private Vector3 _screenBounds;
-        private SphereSpawner _spawner;
         private Camera _camera;
         private Transform _targetTransform;
 
@@ -27,11 +25,6 @@ namespace Player.UI
         private void Update()
         {
             DrawIndicators();
-        }
-
-        private void OnDisable()
-        {
-            _spawner.CreatedBall -= Show;
         }
 
         private void FindCenterAndBounds()
@@ -69,19 +62,17 @@ namespace Player.UI
             _pointerImage.enabled = false;
         }
 
-        private void Show(Ball ball)
+        public void OnBallCreated(Ball ball)
         {
             _targetTransform = ball.transform;
             _pointerImage.enabled = true;
         }
 
-        public void Init(SphereSpawner spawner)
+        public void Init()
         {
-            FindCenterAndBounds();
-            _spawner = spawner;
-            spawner.CreatedBall += Show;
-            _camera = Camera.main;
             Hide();
+            FindCenterAndBounds();
+            _camera = Camera.main;
         }
     }
 }

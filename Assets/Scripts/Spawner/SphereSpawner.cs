@@ -14,6 +14,7 @@ namespace Spawner
         [SerializeField] private float _spawnDelaySeconds;
         [SerializeField] private float _zBound;
         [SerializeField] private float _xBound;
+        [SerializeField] private float _height;
         [SerializeField] private Ball _ballPrefab;
         [FormerlySerializedAs("_dropPosition")] [SerializeField] private DropPositionPointer _dropPositionPointer;
         [SerializeField] private UnityEvent<Ball> _createdBall;
@@ -31,17 +32,21 @@ namespace Spawner
 
         private IEnumerator SpawnCoroutine()
         {
-            var position = transform.position;
             while (true)
             {
                 yield return new WaitForSeconds(_spawnDelaySeconds);
-                var x = Random.Range(-_xBound, _xBound);
-                var z = Random.Range(-_zBound, _zBound);
-                var randomPosition = new Vector3(x, position.y, z);
-                _dropPositionPointer.SetZPosition(z);
-                var ball =  NightPool.Spawn(_ballPrefab, randomPosition, Quaternion.identity);
+            
+                var ball =  NightPool.Spawn(_ballPrefab, GetRandomPosition(), Quaternion.identity);
                 _createdBall?.Invoke(ball);
             }
+        }
+
+        private Vector3 GetRandomPosition()
+        {
+            var x = Random.Range(-_xBound, _xBound);
+            var z = Random.Range(-_zBound, _zBound);
+            _dropPositionPointer.SetZPosition(z);
+            return new Vector3(x, _height, z);
         }
 
         private void OnDisable()

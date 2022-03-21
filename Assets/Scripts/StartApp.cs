@@ -16,19 +16,42 @@ public class StartApp : MonoBehaviour
 
     private void Awake()
     {
+        TryFindMainObjects();
+        TryCreateObjects();
+        InitializeClasses();
+    }
+
+    private void OnEnable()
+    {
+        _spawner.CreatedBall += _ballPointer.OnBallCreated;
+    }
+
+    private void OnDisable()
+    {
+        _spawner.CreatedBall -= _ballPointer.OnBallCreated;
+    }
+
+    private void TryCreateObjects()
+    {
+        _player ??= Instantiate(_playerPrefab);
+        _ballPointer ??= Instantiate(_ballPointerPrefab);
+        _scoreMover ??= Instantiate(_scoreMoverPrefab);
+    }
+    
+    private void TryFindMainObjects()
+    {
         _player = FindObjectOfType<DragObject>();
         _ballPointer = FindObjectOfType<BallPointer>();
         _scoreMover = FindObjectOfType<UIScoreMover>();
     }
 
-    private void OnEnable()
+    private void InitializeClasses()
     {
-        _player ??= Instantiate(_playerPrefab);
-        _ballPointer ??= Instantiate(_ballPointerPrefab);
-        _scoreMover ??= Instantiate(_scoreMoverPrefab);
         _spawner.Init();
-        _ballPointer.Init(_spawner);
-        _scoreMover.Init(_player);
-        _camera.Init(_player.transform);
+        _ballPointer.Init();
+        var playerTransform = _player.transform;
+        _scoreMover.Init(playerTransform);
+        _camera.Init(playerTransform);
     }
+    
 }
