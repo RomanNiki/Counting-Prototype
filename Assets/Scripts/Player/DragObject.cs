@@ -7,7 +7,7 @@ namespace Player
     {
         [SerializeField] private float _force;
         [SerializeField] private float _smoothTime;
-        [SerializeField] private Rigidbody _rigidbody;
+        private Rigidbody _rigidbody;
         private Vector3 _mouseOffset;
         private float _mouseZCoordinate;
         private Camera _mainCamera;
@@ -15,7 +15,7 @@ namespace Player
         private void Awake()
         {
             _mainCamera = Camera.main;
-            _rigidbody ??= GetComponent<Rigidbody>();
+            _rigidbody = GetComponent<Rigidbody>();
         }
 
         private void OnMouseDown()

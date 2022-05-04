@@ -2,14 +2,16 @@ using UnityEngine;
 
 namespace Player.UI
 {
+    [RequireComponent(typeof(Light))]
     public class DropPositionPointer : MonoBehaviour
     {
         [SerializeField] private float _lifeTime;
-        [SerializeField] private Light _light;
+        private Light _light;
         private Transform _transform;
 
-        private void Awake()
+        private void Start()
         {
+            _light = GetComponent<Light>();
             _transform = transform;
         }
 
